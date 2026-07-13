@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday, Mehjabin! 🎂</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ========== ANIMATED DARK BACKGROUND (always on) ========== -->
+  <div class="bg-dark"></div>
+  <div class="bg-orbs" aria-hidden="true">
+    <span class="orb orb-1"></span>
+    <span class="orb orb-2"></span>
+    <span class="orb orb-3"></span>
+    <span class="orb orb-4"></span>
+  </div>
+  <!-- Drop your gif at assets/bg.gif — loops automatically -->
+  <div class="bg-gif" aria-hidden="true"></div>
+  <div class="bg-overlay"></div>
+  <canvas id="bgAnimCanvas" aria-hidden="true"></canvas>
+  <canvas id="sparkleCanvas" aria-hidden="true"></canvas>
+  <div id="floatingHearts" aria-hidden="true"></div>
+
+  <!-- ========== FLOATING WISH BALLOONS (8) ========== -->
+  <div id="balloonContainer" aria-label="Click balloons for birthday wishes"></div>
+
+  <!-- Balloon wish popup -->
+  <div class="balloon-wish-popup hidden" id="balloonWishPopup">
+    <p id="balloonWishText"></p>
+  </div>
+
+  <!-- ========== GIFT MAGIC INTRO (sparkle reveal) ========== -->
+  <div class="gift-magic-intro hidden" id="giftMagicIntro" aria-hidden="true">
+    <canvas id="magicIntroCanvas" aria-hidden="true"></canvas>
+    <div class="magic-intro-content">
+      <div class="magic-sparkle-ring"></div>
+      <div class="magic-sparkle-ring delay-1"></div>
+      <div class="magic-sparkle-ring delay-2"></div>
+      <p class="magic-intro-text">✨ Something Magical Awaits ✨</p>
+      <p class="magic-intro-sub">Just for you, Jeba...</p>
+    </div>
+  </div>
+
+  <!-- ========== BIG GIFT POPUP MODAL ========== -->
+  <div class="gift-popup-overlay hidden" id="giftPopupOverlay" aria-hidden="true">
+    <div class="gift-popup" id="giftPopup" role="dialog" aria-labelledby="giftPopupTitle">
+      <button class="gift-popup-close" id="giftPopupClose" aria-label="Close gift picker">&times;</button>
+
+      <header class="gift-popup-header">
+        <span class="gift-popup-tag">🎁 Your Birthday Gifts</span>
+        <h2 id="giftPopupTitle">Pick Everything You Want!</h2>
+        <p class="gift-popup-sub">Hover to see the magic glow — tap to select 💝</p>
+      </header>
+
+      <nav class="gift-category-tabs" id="giftCategoryTabs">
+        <button class="gift-tab active" data-tab="cakes">🍰 Cakes</button>
+        <button class="gift-tab" data-tab="food">🍕 Food</button>
+        <button class="gift-tab" data-tab="girls">💄 For You</button>
+        <button class="gift-tab" data-tab="extras">✨ Extras</button>
+      </nav>
+
+      <div class="gift-hover-preview" id="giftHoverPreview" aria-hidden="true">
+        <div class="gift-preview-glow"></div>
+        <img class="gift-preview-img" id="giftPreviewImg" src="" alt="">
+        <p class="gift-preview-name" id="giftPreviewName"></p>
+      </div>
+
+      <div class="gift-horizontal-scroll" id="giftHorizontalScroll"></div>
+
+      <footer class="gift-popup-footer">
+        <p class="gift-popup-count" id="giftPopupCount">0 gifts selected</p>
+        <button class="btn btn-primary btn-glow" id="giftPopupDone">Done — These Are Mine! 💜</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ========== MUSIC (autoplay) ========== -->
+  <div class="music-controls" id="musicControls">
+    <button class="music-btn playing" id="musicToggle" aria-label="Toggle background music">
+      <span class="music-icon">🎵</span>
+      <span class="music-label">Playing</span>
+    </button>
+    <input type="range" id="volumeSlider" min="0" max="100" value="50" aria-label="Volume">
+  </div>
+
+  <audio id="bgMusic" loop preload="auto" autoplay>
+    <source src="Happy Birthday Ishq Forever Nakash Aziz Krishna Chaturvedi &amp; Ruhi Singh.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- ========== PROGRESS DOTS ========== -->
+  <nav class="progress-nav" id="progressNav" aria-label="Page progress">
+    <button class="progress-dot active" data-screen="0" aria-label="Welcome"></button>
+    <button class="progress-dot" data-screen="1" aria-label="Birthday cards"></button>
+    <button class="progress-dot" data-screen="2" aria-label="Password game"></button>
+    <button class="progress-dot" data-screen="3" aria-label="Surprise"></button>
+    <button class="progress-dot" data-screen="4" aria-label="Memories"></button>
+  </nav>
+
+  <main class="app-container" id="appContainer">
+
+    <!-- ===== SCREEN 1: WELCOME / LETTER ===== -->
+    <section class="screen active" id="screen-0" data-screen="0">
+      <div class="screen-inner letter-screen">
+        <div class="envelope-wrapper" id="envelopeWrapper">
+          <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Open birthday letter">
+            <div class="envelope-flap"></div>
+            <div class="envelope-body">
+              <div class="envelope-heart">💌</div>
+              <p class="envelope-hint">Tap to open your letter</p>
+            </div>
+          </div>
+        </div>
+
+        <article class="birthday-letter hidden" id="birthdayLetter">
+          <div class="letter-paper">
+            <div class="letter-wax-seal">🎂</div>
+            <p class="letter-dear">Dear Mehjabin,</p>
+            <p class="letter-body">
+              Today is all about <em>you</em> — the girl who is so pretty, so glorious,
+              and so incredibly special. Your smile lights up every room, and your heart
+              makes the world a softer, brighter place.
+            </p>
+            <p class="letter-body">
+              Whether it's a romantic movie night or a horror marathon, you make every
+              moment unforgettable. Happy Birthday, Jeba. This surprise was made with
+              so much love, just for you. 💜
+            </p>
+            <p class="letter-sign">— With love, your friend 🤍</p>
+            <button class="btn btn-primary btn-glow" id="openSurpriseBtn">Open Your Surprise ✨</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== SCREEN 2: BIRTHDAY CARDS ===== -->
+    <section class="screen" id="screen-1" data-screen="1">
+      <div class="screen-inner cards-screen">
+        <header class="section-header">
+          <span class="section-tag">For You, Jeba</span>
+          <h2>Birthday Wishes</h2>
+          <p class="section-sub">Tap each card to reveal something special</p>
+        </header>
+
+        <div class="wish-cards-grid">
+
+          <!-- Card 1: Birthday Wish -->
+          <article class="wish-card" data-card="1">
+            <div class="wish-card-inner">
+              <div class="wish-card-front">
+                <span class="card-emoji">🎀</span>
+                <h3>Birthday Wish</h3>
+                <p>Tap to read</p>
+              </div>
+              <div class="wish-card-back">
+                <p>
+                  You are so pretty, so glorious, and so full of grace.
+                  May this year bring you everything your beautiful heart desires.
+                  Stay shining, Mehjabin Alam Jeba! 🌸
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 2: Surprise messages -->
+          <article class="wish-card surprise-card" data-card="2">
+            <div class="wish-card-inner">
+              <div class="wish-card-front">
+                <span class="card-emoji">✨</span>
+                <h3>Surprise!</h3>
+                <p>Tap to reveal</p>
+              </div>
+              <div class="wish-card-back">
+                <div class="surprise-reveal" id="surpriseReveal">
+                  <p class="surprise-text hidden-msg show" data-msg="0">You're prettier than any movie star! 💫</p>
+                  <p class="surprise-text hidden-msg" data-msg="1">Rom-com or horror — you slay both! 🎬</p>
+                  <p class="surprise-text hidden-msg" data-msg="2">Future cybersecurity queen! 🔐</p>
+                  <p class="surprise-text hidden-msg" data-msg="3">Your glory shines through everything you do 👑</p>
+                  <button class="btn btn-small" id="nextSurpriseMsg">Tap for more ✨</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 3: Memories preview -->
+          <article class="wish-card gallery-card" data-card="3">
+            <div class="wish-card-inner">
+              <div class="wish-card-front">
+                <span class="card-emoji">📸</span>
+                <h3>Memories</h3>
+                <p>Tap to view</p>
+              </div>
+              <div class="wish-card-back">
+                <div class="mini-gallery" id="miniGallery">
+                  <div class="gallery-slider" id="gallerySlider"></div>
+                  <div class="gallery-dots" id="galleryDots"></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 4: Birthday Gift picker — opens big magic popup -->
+          <article class="wish-card gift-card" data-card="4" id="giftCard">
+            <div class="wish-card-inner">
+              <div class="wish-card-front">
+                <span class="card-emoji">🎁</span>
+                <h3>Birthday Gift</h3>
+                <p>Tap to open your magic gifts!</p>
+              </div>
+              <div class="wish-card-back gift-back">
+                <span class="card-emoji">✨</span>
+                <p class="gift-back-hint">Your gift box is opening...</p>
+                <button class="btn btn-small gift-reopen-btn" type="button">Open Gift Box 🎁</button>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <button class="btn btn-primary" id="toPasswordBtn">Continue to Secret Gate 🔐</button>
+      </div>
+    </section>
+
+    <!-- ===== SCREEN 3: PASSWORD GATE (14 July) ===== -->
+    <section class="screen" id="screen-2" data-screen="2">
+      <div class="screen-inner password-screen">
+        <header class="section-header">
+          <span class="section-tag cyber-tag">&lt;/security&gt;</span>
+          <h2>Secret Birthday Gate</h2>
+          <p class="section-sub">Enter your birthday to unlock the surprise</p>
+        </header>
+
+        <div class="terminal-box glass-card">
+          <div class="terminal-header">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span class="terminal-title">jeba_birthday.exe</span>
+          </div>
+          <div class="terminal-body">
+            <p class="terminal-line"><span class="prompt">$</span> authenticate --user=mehjabin</p>
+            <p class="terminal-line muted">Hint: Your special day &amp; month 🎂</p>
+            <form class="password-form" id="passwordForm">
+              <div class="input-row">
+                <label for="birthDay">Day</label>
+                <input type="number" id="birthDay" min="1" max="31" placeholder="DD" required>
+              </div>
+              <div class="input-row">
+                <label for="birthMonth">Month</label>
+                <select id="birthMonth" required>
+                  <option value="">Month</option>
+                  <option value="1">January</option>
+                  <option value="2">February</option>
+                  <option value="3">March</option>
+                  <option value="4">April</option>
+                  <option value="5">May</option>
+                  <option value="6">June</option>
+                  <option value="7">July</option>
+                  <option value="8">August</option>
+                  <option value="9">September</option>
+                  <option value="10">October</option>
+                  <option value="11">November</option>
+                  <option value="12">December</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary btn-cyber">Unlock Surprise 🔓</button>
+            </form>
+            <p class="error-msg" id="passwordError" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="unlock-overlay" id="unlockOverlay" aria-hidden="true">
+          <div class="unlock-content">
+            <div class="unlock-ring"></div>
+            <div class="unlock-ring delay"></div>
+            <p class="unlock-text">Access Granted ✓</p>
+            <p class="unlock-sub">Welcome to your surprise, Jeba!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SCREEN 4: MAIN SURPRISE + AGE COUNTER ===== -->
+    <section class="screen" id="screen-3" data-screen="3">
+      <div class="screen-inner surprise-screen">
+        <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+
+        <div class="surprise-content">
+          <div class="cake-container" id="birthdayCake">
+            <div class="cake-plate"></div>
+            <div class="cake-layer cake-bottom"></div>
+            <div class="cake-layer cake-middle"></div>
+            <div class="cake-layer cake-top"></div>
+            <div class="cake-frosting"></div>
+            <ul class="candles" id="candleList"></ul>
+          </div>
+
+          <h1 class="birthday-title glow-text">
+            Happy Birthday<br>
+            <span>Jebu!!!</span>
+          </h1>
+
+          <!-- Live age since 14 July 2001 -->
+          <div class="age-counter glass-card" id="ageCounter">
+            <p class="age-label">Born 14 July 2001 · Your age right now</p>
+            <div class="age-blocks">
+              <div class="age-block"><span id="ageYears">0</span><small>Years</small></div>
+              <div class="age-block"><span id="ageMonths">0</span><small>Months</small></div>
+              <div class="age-block"><span id="ageDays">0</span><small>Days</small></div>
+              <div class="age-block"><span id="ageHours">0</span><small>Hours</small></div>
+              <div class="age-block"><span id="ageMinutes">0</span><small>Min</small></div>
+              <div class="age-block"><span id="ageSeconds">0</span><small>Sec</small></div>
+            </div>
+          </div>
+
+          <p class="surprise-message">
+            Today the world gets a little brighter because <em>you</em> exist —
+            pretty, glorious, and absolutely one of a kind. 🖤❤️
+          </p>
+
+          <div class="deco-row">
+            <span class="deco-item float-anim">🎂</span>
+            <span class="deco-item float-anim delay-1">🎀</span>
+            <span class="deco-item float-anim delay-2">🎬</span>
+            <span class="deco-item float-anim delay-3">🔐</span>
+            <span class="deco-item float-anim delay-4">✨</span>
+          </div>
+
+          <button class="btn btn-primary btn-glow" id="toMemoriesBtn">One More Surprise →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SCREEN 5: MEMORIES + FINAL MESSAGE ===== -->
+    <section class="screen" id="screen-4" data-screen="4">
+      <div class="screen-inner memories-screen">
+        <header class="section-header">
+          <span class="section-tag">Forever Friends</span>
+          <h2>Our Memories</h2>
+        </header>
+
+        <div class="timeline" id="memoryTimeline"></div>
+
+        <article class="final-message glass-card" id="finalMessage">
+          <p class="final-quote">
+            "Thank you for being such a wonderful friend. Your kindness, your laughter,
+            and your beautiful heart make the world a better place. Here's to many more
+            memories together."
+          </p>
+          <div class="gift-from-me" id="giftFromMe">
+            <p class="gift-from-title">🎁 Your birthday gifts from me:</p>
+            <p class="gift-from-list" id="giftFromList">Pick your gifts on the Birthday Gift card!</p>
+          </div>
+          <p class="final-name">— Forever grateful 🤍</p>
+          <div class="closing-hearts" id="closingHearts" aria-hidden="true"></div>
+        </article>
+
+        <div class="ending-section" id="endingSection">
+          <p class="ending-hint">You've reached the end of your surprise...</p>
+          <button class="btn btn-primary btn-glow ending-btn" id="endingBtn" type="button">
+            One Last Time... ✨
+          </button>
+        </div>
+
+        <p class="footer-note">Made with love for Mehjabin Alam Jeba 🎂</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========== FINAL ENDING OVERLAY (The End) ========== -->
+  <div class="ending-overlay hidden" id="endingOverlay" aria-hidden="true">
+    <canvas id="endingCanvas" aria-hidden="true"></canvas>
+    <div class="ending-curtain ending-curtain-left"></div>
+    <div class="ending-curtain ending-curtain-right"></div>
+    <div class="ending-content" id="endingContent">
+      <p class="ending-line ending-line-1">One last time...</p>
+      <p class="ending-line ending-line-2">Just for you, Jeba 💜</p>
+      <div class="ending-sparkle-divider">✦ ✦ ✦</div>
+      <p class="ending-line ending-line-3">Stay pretty. Stay glorious.</p>
+      <p class="ending-line ending-line-4">See you next birthday 🎂</p>
+      <p class="ending-the-end">— The End —</p>
+      <button class="btn btn-small ending-replay-btn hidden" id="endingReplayBtn" type="button">
+        Relive the magic ↺
+      </button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

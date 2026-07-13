@@ -1,0 +1,41 @@
+BIRTHDAY PROJECT — ASSET FILES GUIDE
+=====================================
+
+Your project already includes these magic/gift files (ready to use):
+
+  assets/gifts/choc-cake.svg      — Cake gift icon
+  assets/gifts/flowers.svg        — Flowers gift icon
+  assets/gifts/makeup.svg         — Makeup/girls gift icon
+  assets/gifts/pizza.svg          — Food gift icon
+  assets/gifts/magic-sparkle.svg  — Magic sparkle (intro & extras)
+
+OPTIONAL — Add your own images:
+  Drop real gift photos into assets/gifts/ and update script.js
+  (search for GIFT_ITEMS) to point img: to your file, e.g.:
+    img: 'assets/gifts/my-cake.jpg'
+
+OPTIONAL — Magic background GIF (for intro mood):
+  1. Download a free sparkle/glitter GIF from:
+     - https://giphy.com/search/sparkle-background
+     - https://giphy.com/search/magic-pink
+     - https://pixabay.com/gifs/search/sparkle/
+  2. Save as: assets/bg.gif
+     (already referenced in style.css — loops automatically)
+
+OPTIONAL — Background music:
+  Already set to: Happy Birthday Ishq Forever...mp3 (in project root)
+  Or replace with any .mp3 and update index.html <audio> src.
+
+HOW TO OPEN:
+  Double-click index.html
+  Or run: python -m http.server 8080
+  Then visit: http://localhost:8080
+
+GIFT POPUP FEATURES:
+  - Tap "Birthday Gift" card → magic sparkle intro → big popup
+  - Hover any gift → full picture glows at top
+  - Horizontal scroll to browse all options
+  - 4 tabs: Cakes, Food, For You, Extras
+  - Tap to select, "Done" to save choices
+
+Made with love for Mehjabin 🎂

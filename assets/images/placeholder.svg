@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fce4ec"/>
+      <stop offset="50%" style="stop-color:#f3e5f5"/>
+      <stop offset="100%" style="stop-color:#fff"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <text x="200" y="130" text-anchor="middle" font-family="Georgia, serif" font-size="48" fill="#c62828">📸</text>
+  <text x="200" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#1a1a1a" opacity="0.6">Replace with your photo</text>
+  <text x="200" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#ab47bc" opacity="0.5">assets/images/photo1.jpg</text>
+</svg>
